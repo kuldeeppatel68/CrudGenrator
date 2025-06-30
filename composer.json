@@ -1,0 +1,15 @@
+{
+    "name": "kuldeep/crud-generator",
+    "autoload": {
+        "psr-4": {
+            "Kuldeep\\CrudGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kuldeep\\CrudGenerator\\CrudGeneratorServiceProvider"
+            ]
+        }
+    }
+}

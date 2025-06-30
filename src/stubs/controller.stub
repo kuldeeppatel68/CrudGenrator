@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{modelName}};
+use Illuminate\Http\Request;
+
+class {{modelName}}Controller extends Controller
+{
+    public function index()
+    {
+        $items = {{modelName}}::all();
+        return view('{{viewFolder}}.index', compact('items'));
+    }
+
+    public function create()
+    {
+        return view('{{viewFolder}}.form');
+    }
+
+    public function store(Request $request)
+    {
+        {{modelName}}::create($request->all());
+        return redirect()->route('{{viewFolder}}.index');
+    }
+
+    public function edit({{modelName}} ${{modelName}})
+    {
+        return view('{{viewFolder}}.form', compact('{{modelName}}'));
+    }
+
+    public function update(Request $request, {{modelName}} ${{modelName}})
+    {
+        ${{modelName}}->update($request->all());
+        return redirect()->route('{{viewFolder}}.index');
+    }
+
+    public function destroy({{modelName}} ${{modelName}})
+    {
+        ${{modelName}}->delete();
+        return back();
+    }
+}
