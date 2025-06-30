@@ -16,7 +16,12 @@ class CrudGeneratorController extends Controller
 
     public function generate(Request $request)
     {
-        $module = Str::studly($request->input('module'));
+        $moduleInput = $request->input('module');
+        if (empty($moduleInput) || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/', $moduleInput)) {
+            return redirect()->back()->with('error', 'Invalid module name provided.');
+        }
+
+        $module = Str::studly($moduleInput);
         $fields = $request->input('fields', []);
         $relations = $request->input('relations', []);
 
@@ -56,11 +61,11 @@ class CrudGeneratorController extends Controller
             ];
 
             return <<<EOT
-                public function {$method}()
-                {
-                    {$relationsMap[$type]}
-                }
-            EOT;
+    public function {$method}()
+    {
+        {$relationsMap[$type]}
+    }
+EOT;
         })->implode("\n\n");
 
         $usesSoftDeletes = request()->has('soft_deletes') ? "use Illuminate\\Database\\Eloquent\\SoftDeletes;\n" : '';
@@ -73,6 +78,7 @@ class CrudGeneratorController extends Controller
             $stub
         );
 
+        File::ensureDirectoryExists(app_path('Models'));
         File::put(app_path("Models/{$module}.php"), $content);
     }
 
@@ -85,6 +91,7 @@ class CrudGeneratorController extends Controller
             $stub
         );
 
+        File::ensureDirectoryExists(app_path('Http/Controllers'));
         File::put(app_path("Http/Controllers/{$module}Controller.php"), $content);
     }
 
@@ -182,11 +189,11 @@ class CrudGeneratorController extends Controller
             if (!Str::contains($modelContent, 'function imageable')) {
                 $morphMethod = <<<EOT
 
-                    public function imageable()
-                    {
-                        return \$this->morphTo();
-                    }
-                EOT;
+    public function imageable()
+    {
+        return \$this->morphTo();
+    }
+EOT;
                 $modelContent = preg_replace('/}\s*$/', $morphMethod . "\n}", $modelContent);
                 File::put($modelPath, $modelContent);
             }
