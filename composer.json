@@ -1,5 +1,8 @@
 {
     "name": "kuldeep/crud-generator",
+    "description": "CRUD Generator for Laravel",
+    "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Kuldeep\\CrudGenerator\\": "src/"
@@ -11,5 +14,7 @@
                 "Kuldeep\\CrudGenerator\\CrudGeneratorServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
