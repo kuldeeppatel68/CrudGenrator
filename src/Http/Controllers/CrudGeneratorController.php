@@ -16,7 +16,7 @@ class CrudGeneratorController extends Controller
 
     public function generate(Request $request)
     {
-        $moduleInput = $request->input('module');
+        $moduleInput = $request->input('module_name');
         if (empty($moduleInput) || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/', $moduleInput)) {
             return redirect()->back()->with('error', 'Invalid module name provided.');
         }
